@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+pathfinding-visualizer
+
+# QT files
+*.pro.user
+.qmake.stash
+moc*
+
+# Project related files
+/.vscode
+Makefile
