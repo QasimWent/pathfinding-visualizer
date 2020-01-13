@@ -2,9 +2,12 @@
 #define GRID2D_H
 
 #include <QAbstractTableModel>
+#include <QVector>
+#include "Node.h"
+#include "GridInfo.h"
 
-const size_t COLS = 9;
-const size_t ROWS = 9;
+constexpr size_t ROWS = GridInfo::rows();
+constexpr size_t COLS = GridInfo::rows();
 
 class Grid2D : public QAbstractTableModel
 {
@@ -15,11 +18,14 @@ public:
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     int columnCount(const QModelIndex& parent = QModelIndex()) const override; 
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
-    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
-    Qt::ItemFlags flags(const QModelIndex& index) const override;
+    void aStar();
     
 private:
-    int m_grid[ROWS][COLS] = {0};
+    mutable Node grid[ROWS][COLS];
+    Node start{0, 0};
+    Node end{ROWS-1, COLS-1};
+    QVector<Node> openSet = {start};
+    QVector<Node> closedSet;
 };
 
 #endif 

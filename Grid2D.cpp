@@ -1,10 +1,21 @@
 #include "Grid2D.h"
 #include <QBrush>
 #include <QString>
+#include <QDebug>
 
 Grid2D::Grid2D(QObject* parent) : QAbstractTableModel(parent)
 {
-
+    // Initialize all nodes in grid
+    for (size_t i = 0; i != ROWS; ++i)
+    {
+        for (size_t j = 0; j != COLS; ++j)
+        {
+            grid[i][j].row = i;
+            grid[i][j].col = j;
+            grid[i][j].addNeighbours(grid);
+            qDebug() << grid[i][j];
+        }
+    }
 }
 
 int Grid2D::rowCount(const QModelIndex&) const
@@ -17,7 +28,7 @@ int Grid2D::columnCount(const QModelIndex&) const
     return COLS;
 }
 
-QVariant Grid2D::data(const QModelIndex& index, int role) const 
+QVariant Grid2D::data(const QModelIndex& index, int role) const
 {
     int row = index.row();
     int col = index.column();
@@ -25,39 +36,21 @@ QVariant Grid2D::data(const QModelIndex& index, int role) const
     switch (role)
     {
         case Qt::DisplayRole:
-            return m_grid[row][col];
+            return "";
         case Qt::BackgroundRole:
-            if (m_grid[row][col] != 0)
+            for (auto& node: openSet)
             {
-               return QBrush(Qt::gray);
+                if (row == node.row && col == node.col)
+                {
+                    return QBrush(Qt::green);
+                }
             }
             break;
     }
     return QVariant();
 }
 
-bool Grid2D::setData(const QModelIndex& index, const QVariant& value, int role)
+void Grid2D::aStar()
 {
-    if (role == Qt::EditRole)
-    {
-        m_grid[index.row()][index.column()] = value.toInt();
-        QString result;
-	    for(int row= 0; row < ROWS; row++)
-	    {
-            for(int col= 0; col < COLS; col++)
-	        {
-	            result += m_grid[row][col] + " ";
-	        }
-        }
-    }
-    return true;
-}
-
-Qt::ItemFlags Grid2D::flags(const QModelIndex &index) const
-{
-    if (m_grid[index.row()][index.column()] == 0)
-    {
-        return Qt::ItemIsEditable | QAbstractTableModel::flags(index);
-    }
-    return Qt::ItemIsEnabled;
+    // TODO - Implement a* algorithm
 }
