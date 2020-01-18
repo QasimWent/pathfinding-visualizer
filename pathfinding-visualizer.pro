@@ -14,7 +14,7 @@ INCLUDEPATH += .
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 # Input
-HEADERS += Grid2D.h MainWindow.h GridInfo.h Node.h
-SOURCES += Grid2D.cpp main.cpp MainWindow.cpp Node.cpp
+HEADERS += Position.h GridConfig.h Grid2D.h MainWindow.h Node.h
+SOURCES += GridConfig.cpp Grid2D.cpp MainWindow.cpp Node.cpp main.cpp
 
 QT += widgets

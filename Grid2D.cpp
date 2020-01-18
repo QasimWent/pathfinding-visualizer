@@ -1,31 +1,21 @@
-#include "Grid2D.h"
 #include <QBrush>
-#include <QString>
-#include <QDebug>
+#include "Grid2D.h"
+#include "GridConfig.h"
+
 
 Grid2D::Grid2D(QObject* parent) : QAbstractTableModel(parent)
 {
-    // Initialize all nodes in grid
-    for (size_t i = 0; i != ROWS; ++i)
-    {
-        for (size_t j = 0; j != COLS; ++j)
-        {
-            grid[i][j].row = i;
-            grid[i][j].col = j;
-            grid[i][j].addNeighbours(grid);
-            qDebug() << grid[i][j];
-        }
-    }
+    
 }
 
 int Grid2D::rowCount(const QModelIndex&) const
 {
-    return ROWS;
+    return GridConfig::getRows();
 }
 
 int Grid2D::columnCount(const QModelIndex&) const
 {
-    return COLS;
+    return GridConfig::getCols();
 }
 
 QVariant Grid2D::data(const QModelIndex& index, int role) const
@@ -40,11 +30,20 @@ QVariant Grid2D::data(const QModelIndex& index, int role) const
         case Qt::BackgroundRole:
             for (auto& node: openSet)
             {
-                if (row == node.row && col == node.col)
+                if (row == node->position.row && col == node->position.col)
                 {
                     return QBrush(Qt::green);
                 }
             }
+
+            for (auto& node: closedSet)
+            {
+                if (row == node->position.row && col == node->position.col)
+                {
+                    return QBrush(Qt::red);
+                }
+            }
+            
             break;
     }
     return QVariant();
@@ -52,5 +51,10 @@ QVariant Grid2D::data(const QModelIndex& index, int role) const
 
 void Grid2D::aStar()
 {
-    // TODO - Implement a* algorithm
+
+}  
+
+void Grid2D::changeGrid()
+{
+    aStar();
 }

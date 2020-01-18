@@ -1,7 +1,6 @@
 #include <QTableView>
 #include <QPushButton>
 #include "MainWindow.h"
-#include "Grid2D.h"
 
 MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
 {
@@ -9,12 +8,14 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
     QHBoxLayout* hbox = new QHBoxLayout();
 
     tableView = new QTableView(this);
-    QAbstractTableModel* myModel = new Grid2D();
+    myModel = new Grid2D();
     tableView->setModel(myModel);
     tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     tableView->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     QPushButton* traverseBtn = new QPushButton("Traverse", this);
+    connect(traverseBtn, SIGNAL (clicked()), this, SLOT (handleButton()));
+
 
     hbox->addWidget(traverseBtn, 1, Qt::AlignRight);
 
@@ -24,3 +25,8 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
 
     setLayout(vbox);
 } 
+
+void MainWindow::handleButton()
+{
+    myModel->changeGrid();
+}

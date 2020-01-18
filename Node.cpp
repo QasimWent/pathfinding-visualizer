@@ -1,40 +1,29 @@
 #include "Node.h"
-#include "GridInfo.h"
 
-#include <QDebug>
-
-constexpr size_t rows = GridInfo::rows();
-constexpr size_t cols = GridInfo::cols();
-
-
-void Node::addNeighbours(Node (&grid)[9][9])
+bool Node::operator==(const Node& rhs) const
 {
-    if (row < rows - 1)
+    if (this->position == rhs.position)
     {
-        neighbours.push_back(grid[row + 1][col]);
+        return true;
     }
-    if (row > 0)
+    else
     {
-        neighbours.push_back(grid[row - 1][col]);
-    }
-    if (col < cols - 1)
-    {
-        neighbours.push_back(grid[row][col + 1]);
-    }
-    if (col > 0)
-    {
-        neighbours.push_back(grid[row][col - 1]);
+        return false;
     }
 }
 
-
-QDebug operator<<(QDebug out, const Node& node)
+Node& Node::operator=(const Node& rhs)
 {
-    out << node.fCost << " " << node.gCost << " " << node.hCost << " (" << node.row << ", " << node.col << ")" << "\n";
-    out << "Neighbours: " << "\n";
-    for (auto& neighbour: node.neighbours)
+    gCost = rhs.gCost;
+    hCost = rhs.hCost;
+    fCost = rhs.fCost;
+
+    position = rhs.position;
+    if (rhs.parent != nullptr)
     {
-        out << "[" << neighbour.row << ", " << neighbour.col << "]\n";
+        parent = new Node();
+        *parent = *(rhs.parent);
     }
-    return out;
+
+    return *this;
 }

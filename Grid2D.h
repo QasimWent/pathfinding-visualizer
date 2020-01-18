@@ -4,10 +4,7 @@
 #include <QAbstractTableModel>
 #include <QVector>
 #include "Node.h"
-#include "GridInfo.h"
-
-constexpr size_t ROWS = GridInfo::rows();
-constexpr size_t COLS = GridInfo::rows();
+#include "GridConfig.h"
 
 class Grid2D : public QAbstractTableModel
 {
@@ -20,12 +17,24 @@ public:
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
     void aStar();
     
+public slots:
+    void changeGrid();
+    
 private:
-    mutable Node grid[ROWS][COLS];
-    Node start{0, 0};
-    Node end{ROWS-1, COLS-1};
-    QVector<Node> openSet = {start};
-    QVector<Node> closedSet;
+    QVector<QVector<int>> grid = {
+            {0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+    };
+    QVector<Node*> openSet{new Node()};
+    QVector<Node*> closedSet;
 };
 
 #endif 
