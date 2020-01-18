@@ -28,6 +28,10 @@ QVariant Grid2D::data(const QModelIndex& index, int role) const
         case Qt::DisplayRole:
             return "";
         case Qt::BackgroundRole:
+            if (grid[row][col] == 1)
+            {
+                return QBrush(Qt::black);
+            }
             for (auto& node: openSet)
             {
                 if (row == node->position.row && col == node->position.col)
