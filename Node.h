@@ -20,7 +20,6 @@ private:
     int gCost = 0;
     int hCost = 0;
     int fCost = 0;
-    std::vector<Node> neighbours;
 };
 
 #endif 

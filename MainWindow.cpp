@@ -26,7 +26,12 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
     setLayout(vbox);
 } 
 
+MainWindow::~MainWindow()
+{
+    delete myModel;
+}
+
 void MainWindow::handleButton()
 {
-    myModel->changeGrid();
+    myModel->aStar();
 }
